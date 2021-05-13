@@ -2,6 +2,7 @@ LMC CQRS Solr extension
 =======================
 
 [![cqrs-types](https://img.shields.io/badge/cqrs-types-purple.svg)](https://github.com/lmc-eu/cqrs-types)
+[![Latest Stable Version](https://img.shields.io/packagist/v/lmc/cqrs-solr.svg)](https://packagist.org/packages/lmc/cqrs-solr)
 [![Tests and linting](https://github.com/lmc-eu/cqrs-solr/actions/workflows/tests.yaml/badge.svg)](https://github.com/lmc-eu/cqrs-solr/actions/workflows/tests.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/lmc-eu/cqrs-solr/badge.svg?branch=main)](https://coveralls.io/github/lmc-eu/cqrs-solr?branch=main)
 
