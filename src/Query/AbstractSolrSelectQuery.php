@@ -54,4 +54,11 @@ abstract class AbstractSolrSelectQuery extends AbstractSolrQuery implements Inje
     }
 
     abstract public function prepareSelect(Query $select): Query;
+
+    public function getProfilerData(): ?array
+    {
+        return parent::getProfilerData() + [
+                'Endpoint.details' => clone $this->client->getEndpoint($this->getEndpoint()),
+            ];
+    }
 }

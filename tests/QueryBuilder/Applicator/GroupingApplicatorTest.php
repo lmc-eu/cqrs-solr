@@ -30,11 +30,11 @@ class GroupingApplicatorTest extends ApplicatorTestCase
         $this->assertStringContainsString('rows=' . $entity->getNumberOfRows(), $queryUri);
 
         $this->assertStringContainsString('group=true', $queryUri);
-        $this->assertStringContainsString('group.main=' . $entity->getMainResult() ? 'true' : 'false', $queryUri);
+        $this->assertStringContainsString('group.main=' . ($entity->getMainResult() ? 'true' : 'false'), $queryUri);
         $this->assertStringContainsString('group.field=' . $entity->getGroupingField(), $queryUri);
         $this->assertStringContainsString('group.limit=' . $entity->getGroupingLimit(), $queryUri);
         $this->assertStringContainsString(
-            'group.ngroups=' . $entity->getNumberOfGroups() ? 'true' : 'false',
+            'group.ngroups=' . ($entity->getNumberOfGroups() ? 'true' : 'false'),
             $queryUri
         );
     }
