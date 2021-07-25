@@ -7,7 +7,7 @@
         "php": "^7.4",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "lmc/cqrs-types": "dev-feature/add-initiator-to-response-decoder",
+        "lmc/cqrs-types": "dev-integration/2021-07-25",
         "nelmio/solarium-bundle": "^4.0",
         "solarium/solarium": "^5.2"
     },
