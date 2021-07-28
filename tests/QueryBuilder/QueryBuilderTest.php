@@ -33,6 +33,7 @@ use Lmc\Cqrs\Solr\QueryBuilder\Fixture\StatsDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Query\BuilderPrototypeQuery;
 use PHPUnit\Framework\TestCase;
 use Solarium\Core\Client\Client;
+use Solarium\Core\Client\Endpoint;
 
 class QueryBuilderTest extends TestCase
 {
@@ -323,5 +324,33 @@ class QueryBuilderTest extends TestCase
                 'expectedFullQuery' => 'select?omitHeader=true&wt=json&json.nl=flat&q=%2A%3A%2A&start=0&rows=10&fl=jds%2C%2A%2Cscore&q.op=AND',
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function shouldProfileUsedValues(): void
+    {
+        $client = new Client();
+        $entity = new BaseDummyEntity('query');
+
+        $query = $this->queryBuilderWithApplicators->buildQuery($entity);
+        $query->setSolrClient($client);
+
+        $profilerData = $query->getProfilerData();
+
+        $this->assertIsArray($profilerData);
+
+        $this->assertArrayHasKey('Endpoint', $profilerData);
+        $this->assertSame('Default', $profilerData['Endpoint']);
+
+        $this->assertArrayHasKey('Endpoint.details', $profilerData);
+        $this->assertInstanceOf(Endpoint::class, $profilerData['Endpoint.details']);
+
+        $this->assertNotSame(
+            $client->getEndpoint($query->getEndpoint()),
+            $profilerData['Endpoint.details'],
+            'Profiled endpoint should not be a real instance of endpoint, but it should be cloned, so it remains unchanged in time of profiling.'
+        );
     }
 }

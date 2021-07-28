@@ -49,7 +49,9 @@ abstract class AbstractSolrQuery implements QueryInterface, CacheableInterface, 
 
     public function getProfilerData(): ?array
     {
-        return null;
+        return [
+            'Endpoint' => $this->getEndpoint() ?? 'Default',
+        ];
     }
 
     public function getEndpoint(): ?string
