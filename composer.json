@@ -7,7 +7,7 @@
         "php": "^7.4",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "lmc/cqrs-types": "^1.0",
+        "lmc/cqrs-types": "^2.0",
         "nelmio/solarium-bundle": "^4.0",
         "solarium/solarium": "^5.2"
     },
