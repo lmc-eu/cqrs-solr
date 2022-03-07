@@ -4,6 +4,7 @@ namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\EntityInterface;
 use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\FulltextBigramInterface;
+use Lmc\Cqrs\Solr\ValueObject\LocalParameter;
 use Solarium\QueryType\Select\Query\Query;
 
 class FulltextBigramApplicator implements ApplicatorInterface
@@ -31,7 +32,7 @@ class FulltextBigramApplicator implements ApplicatorInterface
             if ($this->entity->useEDisMaxGlobally()) {
                 $query->getEDisMax()->setPhraseBigramFields(implode(' ', $phraseBigramFields));
             } else {
-                $query->getLocalParameters()->offsetSet('pf2', 'pf2=$phraseBigramFields');
+                $query->getLocalParameters()->offsetSet('pf2', LocalParameter::withPlaceholder('pf2', '$phraseBigramFields'));
                 $query->addParam('phraseBigramFields', implode(' ', $phraseBigramFields));
             }
         }

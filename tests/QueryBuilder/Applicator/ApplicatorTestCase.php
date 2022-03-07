@@ -2,12 +2,11 @@
 
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
+use Lmc\Cqrs\Solr\AbstractSolrTestCase;
 use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\EntityInterface;
 use Lmc\Cqrs\Solr\QueryBuilder\Query\BuilderPrototypeQuery;
-use PHPUnit\Framework\TestCase;
-use Solarium\Core\Client\Client;
 
-class ApplicatorTestCase extends TestCase
+class ApplicatorTestCase extends AbstractSolrTestCase
 {
     protected function getApplicator(string $applicatorClass, EntityInterface $entity): ApplicatorInterface
     {
@@ -25,7 +24,7 @@ class ApplicatorTestCase extends TestCase
     protected function getCustomQueryUri(array $applicators = []): string
     {
         $query = new BuilderPrototypeQuery($applicators);
-        $query->setSolrClient(new Client());
+        $query->setSolrClient($this->createSolrClient());
 
         return urldecode($query->__toString());
     }

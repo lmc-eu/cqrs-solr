@@ -3,6 +3,8 @@
 <!-- There should always be "Unreleased" section at the beginning. -->
 
 ## Unreleased
+- Require php 8.1
+    - [**BC**] Use new language features and change method signatures
 
 ## 2.0.0 - 2022-03-30
 - Allow setting an edismax as local parameters in query

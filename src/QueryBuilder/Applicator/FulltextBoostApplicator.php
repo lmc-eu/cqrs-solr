@@ -4,6 +4,7 @@ namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\EntityInterface;
 use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\FulltextBoostInterface;
+use Lmc\Cqrs\Solr\ValueObject\LocalParameter;
 use Solarium\QueryType\Select\Query\Query;
 
 class FulltextBoostApplicator implements ApplicatorInterface
@@ -44,12 +45,12 @@ class FulltextBoostApplicator implements ApplicatorInterface
             }
         } else {
             if (!empty($boostQuery)) {
-                $query->getLocalParameters()->offsetSet('bq', 'bq=$boostQuery');
+                $query->getLocalParameters()->offsetSet('bq', LocalParameter::withPlaceholder('bq', '$boostQuery'));
                 $query->addParam('boostQuery', $this->entity->getBoostQuery());
             }
 
             if ($phraseSlop !== null) {
-                $query->getLocalParameters()->offsetSet('ps', 'ps=$phraseSlop');
+                $query->getLocalParameters()->offsetSet('ps', LocalParameter::withPlaceholder('ps', '$phraseSlop'));
                 $query->addParam('phraseSlop', $this->entity->getPhraseSlop());
             }
         }

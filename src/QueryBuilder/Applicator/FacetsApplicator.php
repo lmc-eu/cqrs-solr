@@ -135,8 +135,14 @@ class FacetsApplicator implements ApplicatorInterface
             }
         }
 
-        if (!empty($facetExcludes) && method_exists($field, 'setExcludes')) {
-            $field->setExcludes($facetExcludes);
+        if (empty($facetExcludes)) {
+            return;
         }
+
+        $facetExcludes = array_unique($facetExcludes);
+
+        $field
+            ->getLocalParameters()
+            ->setExcludes($facetExcludes);
     }
 }

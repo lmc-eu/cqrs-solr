@@ -7,19 +7,15 @@ use Solarium\Core\Query\Helper;
 /**
  * SolrField is a representation of any data passed by user to Solr (eg. in query or a list of fields returned by Solr)
  */
-class SolrField
+class SolrField implements \Stringable
 {
-    private string $value;
-    private string $localParameter;
-    private int $proximity;
-    private int $boost;
-
-    public function __construct(string $value, string $localParameter = '', int $proximity = 0, int $boost = 0)
-    {
+    public function __construct(
+        private string $value,
+        private string $localParameter = '',
+        private int $proximity = 0,
+        private int $boost = 0
+    ) {
         $this->value = $this->escapePhrase($value);
-        $this->localParameter = $localParameter;
-        $this->proximity = $proximity;
-        $this->boost = $boost;
     }
 
     public function __toString(): string

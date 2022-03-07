@@ -2,6 +2,7 @@
 
 namespace Lmc\Cqrs\Solr\QueryBuilder;
 
+use Lmc\Cqrs\Solr\AbstractSolrTestCase;
 use Lmc\Cqrs\Solr\Query\AbstractSolrQuery;
 use Lmc\Cqrs\Solr\Query\AbstractSolrSelectQuery;
 use Lmc\Cqrs\Solr\QueryBuilder\Applicator\ApplicatorFactory;
@@ -31,11 +32,9 @@ use Lmc\Cqrs\Solr\QueryBuilder\Fixture\ParameterizedDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\SortDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\StatsDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Query\BuilderPrototypeQuery;
-use PHPUnit\Framework\TestCase;
-use Solarium\Core\Client\Client;
 use Solarium\Core\Client\Endpoint;
 
-class QueryBuilderTest extends TestCase
+class QueryBuilderTest extends AbstractSolrTestCase
 {
     private QueryBuilder $queryBuilderWithoutApplicators;
     private QueryBuilder $queryBuilderWithApplicators;
@@ -285,7 +284,7 @@ class QueryBuilderTest extends TestCase
         $expectedParts[] = 'json.nl=flat';
 
         $query = $this->queryBuilderWithApplicators->buildQuery($entity);
-        $query->setSolrClient(new Client());
+        $query->setSolrClient($this->createSolrClient());
 
         $this->assertInstanceOf(AbstractSolrQuery::class, $query);
         $this->assertInstanceOf(BuilderPrototypeQuery::class, $query);
@@ -293,7 +292,7 @@ class QueryBuilderTest extends TestCase
         $queryString = $query->__toString();
 
         foreach ($expectedParts as $expected) {
-            $this->assertStringContainsString($expected, $queryString);
+            $this->assertQueryStringContainsPart($expected, $queryString);
         }
     }
 
@@ -307,7 +306,7 @@ class QueryBuilderTest extends TestCase
         $entity = new BaseDummyEntity((string) $queryOptionsParameters['query']);
 
         $query = $this->queryBuilderWithApplicators->buildQuery($entity);
-        $query->setSolrClient(new Client());
+        $query->setSolrClient($this->createSolrClient());
 
         $this->assertSame($expectedFullQuery, $query->__toString());
     }
@@ -331,7 +330,7 @@ class QueryBuilderTest extends TestCase
      */
     public function shouldProfileUsedValues(): void
     {
-        $client = new Client();
+        $client = $this->createSolrClient();
         $entity = new BaseDummyEntity('query');
 
         $query = $this->queryBuilderWithApplicators->buildQuery($entity);

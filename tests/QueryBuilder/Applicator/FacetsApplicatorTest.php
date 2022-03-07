@@ -27,19 +27,19 @@ class FacetsApplicatorTest extends ApplicatorTestCase
             $this->facetsApplicator,
         ]);
 
-        $this->assertStringContainsString('rows=' . $entity->getNumberOfRows(), $queryUri);
+        $this->assertQueryStringContainsPart('rows=' . $entity->getNumberOfRows(), $queryUri);
 
-        $this->assertStringContainsString('facet=true', $queryUri);
-        $this->assertStringContainsString('facet.sort=' . $entity->getFacetSetSort(), $queryUri);
-        $this->assertStringContainsString('facet.mincount=' . $entity->getMinCount(), $queryUri);
-        $this->assertStringContainsString('facet.limit=' . $entity->getFacetSetLimit(), $queryUri);
-        $this->assertStringContainsString('f.field.facet.limit=' . $entity->getFacetFieldsLimit(), $queryUri);
+        $this->assertQueryStringContainsPart('facet=true', $queryUri);
+        $this->assertQueryStringContainsPart('facet.sort=' . $entity->getFacetSetSort(), $queryUri);
+        $this->assertQueryStringContainsPart('facet.mincount=' . $entity->getMinCount(), $queryUri);
+        $this->assertQueryStringContainsPart('facet.limit=' . $entity->getFacetSetLimit(), $queryUri);
+        $this->assertQueryStringContainsPart('f.field.facet.limit=' . $entity->getFacetFieldsLimit(), $queryUri);
 
         $facetFields = $entity->getFacetFields();
         $globalExcludes = implode(',', $entity->getExcludes());
 
         $facetField = $facetFields[0];
-        $this->assertStringContainsString(
+        $this->assertQueryStringContainsPart(
             sprintf(
                 'facet.field={!key=%s ex=%s,%s}%s',
                 $facetField,
@@ -51,7 +51,7 @@ class FacetsApplicatorTest extends ApplicatorTestCase
         );
 
         $pivotField = $facetFields[1];
-        $this->assertStringContainsString(
+        $this->assertQueryStringContainsPart(
             sprintf(
                 'facet.pivot={!key=%s ex=%s}%s',
                 $pivotField,
@@ -65,7 +65,7 @@ class FacetsApplicatorTest extends ApplicatorTestCase
         $intervalFields = (array) $entity->getIntervalFields($intervalField);
 
         foreach ($intervalFields as $range) {
-            $this->assertStringContainsString(
+            $this->assertQueryStringContainsPart(
                 sprintf(
                     'facet.query={!key=%s}%s:[%s TO %s]',
                     implode('-', $range),
