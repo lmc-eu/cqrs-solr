@@ -1,8 +1,8 @@
 {
     "name": "lmc/cqrs-solr",
-    "type": "library",
     "description": "A library containing base implementations to help with Solr Queries and Commands",
     "license": "MIT",
+    "type": "library",
     "require": {
         "php": "^7.4",
         "ext-json": "*",
@@ -20,9 +20,6 @@
         "phpstan/phpstan-phpunit": "^0.12.18",
         "phpunit/phpunit": "^9.5"
     },
-    "config": {
-        "sort-packages": true
-    },
     "autoload": {
         "psr-4": {
             "Lmc\\Cqrs\\Solr\\": "src/"
@@ -32,6 +29,14 @@
         "psr-4": {
             "Lmc\\Cqrs\\Solr\\": "tests/"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true
     },
     "scripts": {
         "all": [
