@@ -146,6 +146,11 @@ class PersonSearch implements FulltextInterface
         return true;
     }
 
+    public function useEDisMaxGlobally(): bool
+    {
+        return true;
+    }
+
     // Note: there are more methods, you need to implement, but we want to keep this example simple as possible. If you don't need other functionality, simply return null or empty variant from a method.
 }
 

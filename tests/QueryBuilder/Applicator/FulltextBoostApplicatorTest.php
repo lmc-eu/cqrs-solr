@@ -2,12 +2,14 @@
 
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
-use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\FulltextInterface;
+use Lmc\Cqrs\Solr\Fixture\FulltextApplicatorTrait;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\FulltextBigramBoostDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\FulltextBoostDummyEntity;
 
 class FulltextBoostApplicatorTest extends ApplicatorTestCase
 {
+    use FulltextApplicatorTrait;
+
     private FulltextBoostApplicator $fulltextBoostApplicator;
 
     protected function setUp(): void
@@ -17,52 +19,62 @@ class FulltextBoostApplicatorTest extends ApplicatorTestCase
 
     /**
      * @test
+     * @dataProvider provideGlobalEdismax
      */
-    public function shouldApplyBoostOnQuery(): void
+    public function shouldApplyBoostOnQuery(bool $isGlobalEdismax): void
     {
-        $entity = new FulltextBoostDummyEntity();
+        $entity = new FulltextBoostDummyEntity(true, $isGlobalEdismax);
         $this->assertTrue($this->fulltextBoostApplicator->supportEntity($entity));
         $this->fulltextBoostApplicator->setEntity($entity);
 
-        $this->assertApplyFulltextOnQuery($entity);
-
-        $queryUri = $this->getCustomQueryUri([
-            $this->fulltextBoostApplicator,
-        ]);
-
-        $this->assertStringContainsString('bq=' . $entity->getBoostQuery(), $queryUri);
-        $this->assertStringContainsString('ps=' . $entity->getPhraseSlop(), $queryUri);
-    }
-
-    private function assertApplyFulltextOnQuery(FulltextInterface $entity): void
-    {
         $queryUri = $this->getCustomQueryUri([
             $this->getApplicator(FulltextApplicator::class, $entity),
             $this->getApplicator(EntityApplicator::class, $entity),
         ]);
 
-        $this->assertStringContainsString('rows=' . $entity->getNumberOfRows(), $queryUri);
+        $this->assertApplyFulltextOnQuery($entity, $queryUri);
 
-        $this->assertStringContainsString('q=' . implode(' ', $entity->getKeywords()), $queryUri);
-        $this->assertStringContainsString('q.op=' . $entity->getDefaultQueryOperator(), $queryUri);
-        $this->assertStringContainsString('defType=edismax', $queryUri);
-        $this->assertStringContainsString('qf=' . implode(' ', $entity->getQueryFields()), $queryUri);
-        $this->assertStringContainsString('pf=' . implode(' ', $entity->getPhraseFields()), $queryUri);
-        $this->assertStringContainsString('q.alt=' . $entity->getQueryAlternative(), $queryUri);
-        $this->assertStringContainsString('tie=' . $entity->getTie(), $queryUri);
-        $this->assertStringContainsString('mm=' . $entity->getMinimumMatch(), $queryUri);
+        $queryUri = $this->getCustomQueryUri([
+            $this->fulltextBoostApplicator,
+        ]);
+
+        $parameters = $this->parseQueryUriParameters($queryUri);
+
+        if ($isGlobalEdismax) {
+            $boostQuery = $this->assertParameterExists('bq', $parameters);
+            $this->assertSame($entity->getBoostQuery(), $boostQuery);
+
+            $phraseSlop = $this->assertParameterExists('ps', $parameters);
+            $this->assertSame($entity->getPhraseSlop(), (int) $phraseSlop);
+        } else {
+            $query = $this->assertParameterExists('q', $parameters);
+
+            $this->assertStringContainsString('bq=$boostQuery', $query);
+            $boostQuery = $this->assertParameterExists('boostQuery', $parameters);
+            $this->assertSame($entity->getBoostQuery(), $boostQuery);
+
+            $this->assertStringContainsString('ps=$phraseSlop', $query);
+            $phraseSlop = $this->assertParameterExists('phraseSlop', $parameters);
+            $this->assertSame($entity->getPhraseSlop(), (int) $phraseSlop);
+        }
     }
 
     /**
      * @test
+     * @dataProvider provideGlobalEdismax
      */
-    public function shouldApplyBoostAndBigramOptionsOnQuery(): void
+    public function shouldApplyBoostAndBigramOptionsOnQuery(bool $isGlobalEdismax): void
     {
-        $entity = new FulltextBigramBoostDummyEntity();
+        $entity = new FulltextBigramBoostDummyEntity(true, $isGlobalEdismax);
         $this->assertTrue($this->fulltextBoostApplicator->supportEntity($entity));
         $this->fulltextBoostApplicator->setEntity($entity);
 
-        $this->assertApplyFulltextOnQuery($entity);
+        $queryUri = $this->getCustomQueryUri([
+            $this->getApplicator(FulltextApplicator::class, $entity),
+            $this->getApplicator(EntityApplicator::class, $entity),
+        ]);
+
+        $this->assertApplyFulltextOnQuery($entity, $queryUri);
 
         $fulltextBigramApplicator = $this->getApplicator(FulltextBigramApplicator::class, $entity);
 
@@ -71,9 +83,61 @@ class FulltextBoostApplicatorTest extends ApplicatorTestCase
             $this->fulltextBoostApplicator,
         ]);
 
-        $this->assertStringContainsString('bq=' . $entity->getBoostQuery(), $queryUri);
-        $this->assertStringContainsString('ps=' . $entity->getPhraseSlop(), $queryUri);
+        $parameters = $this->parseQueryUriParameters($queryUri);
 
-        $this->assertStringContainsString('pf2=' . implode('&pf2=', $entity->getPhraseBigramFields()), $queryUri);
+        if ($isGlobalEdismax) {
+            $phraseBigramFields = $this->assertParameterExists('pf2', $parameters);
+            $this->assertStringContainsString(implode(' ', $entity->getPhraseBigramFields()), $phraseBigramFields);
+
+            $boostQuery = $this->assertParameterExists('bq', $parameters);
+            $this->assertSame($entity->getBoostQuery(), $boostQuery);
+
+            $phraseSlop = $this->assertParameterExists('ps', $parameters);
+            $this->assertSame($entity->getPhraseSlop(), (int) $phraseSlop);
+        } else {
+            $query = $this->assertParameterExists('q', $parameters);
+
+            $this->assertStringContainsString('pf2=$phraseBigramFields', $query);
+            $phraseBigramFields = $this->assertParameterExists('phraseBigramFields', $parameters);
+            $this->assertSame(implode(' ', $entity->getPhraseBigramFields()), $phraseBigramFields);
+
+            $this->assertStringContainsString('bq=$boostQuery', $query);
+            $boostQuery = $this->assertParameterExists('boostQuery', $parameters);
+            $this->assertSame($entity->getBoostQuery(), $boostQuery);
+
+            $this->assertStringContainsString('ps=$phraseSlop', $query);
+            $phraseSlop = $this->assertParameterExists('phraseSlop', $parameters);
+            $this->assertSame($entity->getPhraseSlop(), (int) $phraseSlop);
+        }
+    }
+
+    /**
+     * @test
+     * @dataProvider provideGlobalEdismax
+     */
+    public function shouldApplyFulltextOnQueryWithDisabledEDisMax(bool $isGlobalEdismax): void
+    {
+        $entity = new FulltextBigramBoostDummyEntity(false, $isGlobalEdismax);
+        $this->assertTrue($this->fulltextBoostApplicator->supportEntity($entity));
+        $this->fulltextBoostApplicator->setEntity($entity);
+
+        $queryUri = $this->getCustomQueryUri([
+            $this->getApplicator(EntityApplicator::class, $entity),
+            $this->getApplicator(FulltextApplicator::class, $entity),
+            $this->fulltextBoostApplicator,
+        ]);
+
+        $this->assertApplyFulltextOnQueryWithoutEdisMax($entity, $queryUri);
+
+        $parameters = $this->parseQueryUriParameters($queryUri);
+
+        $this->assertArrayNotHasKey('bq', $parameters);
+        $this->assertArrayNotHasKey('boostQuery', $parameters);
+
+        $this->assertArrayNotHasKey('ps', $parameters);
+        $this->assertArrayNotHasKey('phraseSlop', $parameters);
+
+        $this->assertArrayNotHasKey('pf2', $parameters);
+        $this->assertArrayNotHasKey('phraseBigramFields', $parameters);
     }
 }

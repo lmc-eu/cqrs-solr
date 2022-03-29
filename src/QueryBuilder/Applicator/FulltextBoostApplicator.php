@@ -23,15 +23,35 @@ class FulltextBoostApplicator implements ApplicatorInterface
 
     public function applyOnQuery(Query $query): void
     {
+        if (!$this->entity->isEDisMaxEnabled()) {
+            return;
+        }
+
         $boostQuery = $this->entity->getBoostQuery();
         $phraseSlop = $this->entity->getPhraseSlop();
 
-        if (!empty($boostQuery)) {
-            $query->getEDisMax()->setBoostQuery($boostQuery);
+        if (empty($boostQuery) && $phraseSlop === null) {
+            return;
         }
 
-        if ($phraseSlop !== null) {
-            $query->getEDisMax()->setPhraseSlop($phraseSlop);
+        if ($this->entity->useEDisMaxGlobally()) {
+            if (!empty($boostQuery)) {
+                $query->getEDisMax()->setBoostQuery($boostQuery);
+            }
+
+            if ($phraseSlop !== null) {
+                $query->getEDisMax()->setPhraseSlop($phraseSlop);
+            }
+        } else {
+            if (!empty($boostQuery)) {
+                $query->getLocalParameters()->offsetSet('bq', 'bq=$boostQuery');
+                $query->addParam('boostQuery', $this->entity->getBoostQuery());
+            }
+
+            if ($phraseSlop !== null) {
+                $query->getLocalParameters()->offsetSet('ps', 'ps=$phraseSlop');
+                $query->addParam('phraseSlop', $this->entity->getPhraseSlop());
+            }
         }
     }
 }

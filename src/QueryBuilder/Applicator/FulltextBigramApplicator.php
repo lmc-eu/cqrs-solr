@@ -23,10 +23,17 @@ class FulltextBigramApplicator implements ApplicatorInterface
 
     public function applyOnQuery(Query $query): void
     {
-        $phraseBigramFields = $this->entity->getPhraseBigramFields();
+        if (!$this->entity->isEDisMaxEnabled()) {
+            return;
+        }
 
-        if (!empty($phraseBigramFields)) {
-            $query->getEDisMax()->setPhraseBigramFields(implode(' ', $phraseBigramFields));
+        if (!empty($phraseBigramFields = $this->entity->getPhraseBigramFields())) {
+            if ($this->entity->useEDisMaxGlobally()) {
+                $query->getEDisMax()->setPhraseBigramFields(implode(' ', $phraseBigramFields));
+            } else {
+                $query->getLocalParameters()->offsetSet('pf2', 'pf2=$phraseBigramFields');
+                $query->addParam('phraseBigramFields', implode(' ', $phraseBigramFields));
+            }
         }
     }
 }

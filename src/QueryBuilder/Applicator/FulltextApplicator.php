@@ -33,15 +33,21 @@ class FulltextApplicator implements ApplicatorInterface
             ->setDefaults();
 
         if ($this->entity->isEDisMaxEnabled()) {
-            $this->setEdisMax();
+            if ($this->entity->useEDisMaxGlobally()) {
+                $this->setGlobalEdisMax();
+            } else {
+                $this->setLocalEdisMax();
+            }
         }
     }
 
     private function addKeywords(): self
     {
-        $keywords = $this->entity->getKeywords();
+        if ($this->entity->isEDisMaxEnabled() && !$this->entity->useEDisMaxGlobally()) {
+            return $this;
+        }
 
-        if (!empty($keywords)) {
+        if (!empty($keywords = $this->entity->getKeywords())) {
             $searchQuery = implode(' ', $keywords);
 
             $this->query->setQuery($searchQuery);
@@ -52,12 +58,14 @@ class FulltextApplicator implements ApplicatorInterface
 
     private function setDefaults(): self
     {
-        $this->query->setQueryDefaultOperator($this->entity->getDefaultQueryOperator());
+        if (!empty($defaultOperator = $this->entity->getDefaultQueryOperator())) {
+            $this->query->setQueryDefaultOperator($defaultOperator);
+        }
 
         return $this;
     }
 
-    private function setEdisMax(): self
+    private function setGlobalEdisMax(): self
     {
         $edismax = $this->query->getEDisMax();
         $edismax
@@ -69,6 +77,36 @@ class FulltextApplicator implements ApplicatorInterface
         if (($minimumMatch = $this->entity->getMinimumMatch()) !== null) {
             $edismax->setMinimumMatch($minimumMatch);
         }
+
+        return $this;
+    }
+
+    private function setLocalEdisMax(): self
+    {
+        $this->query->setQuery('');
+
+        $localParameters = $this->query->getLocalParameters();
+        $localParameters->setType('edismax');
+
+        if (!empty($keyWords = $this->entity->getKeywords())) {
+            $localParameters->setLocalValue('$userQuery');
+            $this->query->addParam('userQuery', implode(' ', $keyWords));
+        }
+
+        if (!empty($queryFields = $this->entity->getQueryFields())) {
+            $localParameters->setQueryField('$queryFields');
+            $this->query->addParam('queryFields', implode(' ', $queryFields));
+        }
+
+        if (!empty($phraseFields = $this->entity->getPhraseFields())) {
+            $localParameters['pf'] = 'pf=$phraseFields';
+            $this->query->addParam('phraseFields', implode(' ', $phraseFields));
+        }
+
+        $localParameters['tie'] = 'tie=' . $this->entity->getTie();
+        $localParameters['mm'] = 'mm=' . $this->entity->getMinimumMatch();
+
+        $this->query->addParam('q.alt', $this->entity->getQueryAlternative());
 
         return $this;
     }
