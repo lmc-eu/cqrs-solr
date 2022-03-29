@@ -27,4 +27,19 @@ class EntityApplicatorTest extends ApplicatorTestCase
         $this->assertStringContainsString('rows=' . $baseEntity->getNumberOfRows(), $queryUri);
         $this->assertStringContainsString('fl=' . implode(',', $baseEntity->getFields()), $queryUri);
     }
+
+    /**
+     * @test
+     */
+    public function shouldUsePlaceholderForAllFields(): void
+    {
+        $baseEntity = new BaseDummyEntity('', []);
+        $this->assertTrue($this->entityApplicator->supportEntity($baseEntity));
+        $this->entityApplicator->setEntity($baseEntity);
+
+        $queryUri = $this->getCustomQueryUri([$this->entityApplicator]);
+
+        $this->assertStringContainsString('rows=' . $baseEntity->getNumberOfRows(), $queryUri);
+        $this->assertStringContainsString('fl=*', $queryUri);
+    }
 }

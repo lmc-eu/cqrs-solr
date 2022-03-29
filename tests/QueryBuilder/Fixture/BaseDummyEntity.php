@@ -9,10 +9,12 @@ use Solarium\QueryType\Select\Query\Query;
 class BaseDummyEntity implements EntityInterface, FulltextInterface
 {
     private string $query;
+    private array $fields;
 
-    public function __construct(string $query = '')
+    public function __construct(string $query = '', array $fields = ['jds', '*', 'score'])
     {
         $this->query = $query;
+        $this->fields = $fields;
     }
 
     public function getNumberOfRows(): int
@@ -22,7 +24,7 @@ class BaseDummyEntity implements EntityInterface, FulltextInterface
 
     public function getFields(): array
     {
-        return ['jds', '*', 'score'];
+        return $this->fields;
     }
 
     public function getKeywords(): array
