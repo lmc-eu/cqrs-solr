@@ -21,8 +21,12 @@ class EntityApplicator implements ApplicatorInterface
 
     public function applyOnQuery(Query $query): void
     {
+        $fields = empty($fields = $this->entity->getFields())
+            ? '*'
+            : $fields;
+
         $query
             ->setRows($this->entity->getNumberOfRows())
-            ->setFields($this->entity->getFields());
+            ->setFields($fields);
     }
 }

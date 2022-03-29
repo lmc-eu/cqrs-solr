@@ -3,6 +3,7 @@
 <!-- There should always be "Unreleased" section at the beginning. -->
 
 ## Unreleased
+- Use `*` as a placeholder for all fields in `EntityApplicator`
 
 ## 1.2.0 - 2021-08-10
 - Add an `$initiator` to `ResponseDecoders` `supports` method

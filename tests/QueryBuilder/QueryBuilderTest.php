@@ -110,7 +110,7 @@ class QueryBuilderTest extends TestCase
                 [
                     'start=0',
                     'rows=20',
-                    'fl=&',
+                    'fl=' . urlencode('*'),
                     $defaultEmptyQuery,
                     'facet.field=' . urlencode('{!key=facet-field ex=global-exclude,facet-field-exclude}field'),
                     'f.field.facet.limit=60',
@@ -128,7 +128,7 @@ class QueryBuilderTest extends TestCase
                 [
                     'start=0',
                     'rows=10',
-                    'fl=&',
+                    'fl=' . urlencode('*'),
                     $defaultEmptyQuery,
                     'fq=' . urlencode('{!tag=filter-tag}filter:query'),
                 ],
@@ -138,7 +138,7 @@ class QueryBuilderTest extends TestCase
                 [
                     'start=0',
                     'rows=20',
-                    'fl=&',
+                    'fl=' . urlencode('*'),
                     $defaultEmptyQuery,
                     'fq=' . urlencode('{!tag=global-tags,filter-1-tag}fitler1:"value"'),
                     'fq=' . urlencode('{!tag=global-tags}fitler2:"value'),
@@ -149,7 +149,7 @@ class QueryBuilderTest extends TestCase
                 [
                     'start=0',
                     'rows=20',
-                    'fl=&',
+                    'fl=' . urlencode('*'),
                     'q=' . urlencode('key word'),
                     'defType=edismax',
                     'q.alt=' . urlencode('*:*'),
@@ -165,7 +165,7 @@ class QueryBuilderTest extends TestCase
                 [
                     'start=0',
                     'rows=20',
-                    'fl=&',
+                    'fl=' . urlencode('*'),
                     'q=' . urlencode('key word'),
                     'defType=edismax',
                     'q.alt=' . urlencode('*:*'),
@@ -182,7 +182,7 @@ class QueryBuilderTest extends TestCase
                 [
                     'start=0',
                     'rows=20',
-                    'fl=&',
+                    'fl=' . urlencode('*'),
                     'q=' . urlencode('key word'),
                     'defType=edismax',
                     'q.alt=' . urlencode('*:*'),
@@ -200,7 +200,7 @@ class QueryBuilderTest extends TestCase
                 [
                     'start=0',
                     'rows=20',
-                    'fl=&',
+                    'fl=' . urlencode('*'),
                     $defaultEmptyQuery,
                     'group=true',
                     'group.field=grouping-field',
@@ -214,7 +214,7 @@ class QueryBuilderTest extends TestCase
                 [
                     'start=0',
                     'rows=20',
-                    'fl=&',
+                    'fl=' . urlencode('*'),
                     $defaultEmptyQuery,
                     'group=true',
                     'group.field=grouping-field',
@@ -238,7 +238,7 @@ class QueryBuilderTest extends TestCase
                 [
                     'start=0',
                     'rows=20',
-                    'fl=&',
+                    'fl=' . urlencode('*'),
                     $defaultEmptyQuery,
                     'sort=' . urlencode('score desc,field asc'),
                 ],
@@ -257,7 +257,7 @@ class QueryBuilderTest extends TestCase
                 [
                     'start=0',
                     'rows=20',
-                    'fl=&',
+                    'fl=' . urlencode('*'),
                     'q=' . urlencode('key word'),
                     'q.op=AND',
                 ],
