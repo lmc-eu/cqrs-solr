@@ -3,6 +3,8 @@
 <!-- There should always be "Unreleased" section at the beginning. -->
 
 ## Unreleased
+
+## 2.0.0 - 2022-03-30
 - Allow setting an edismax as local parameters in query
   - [**BC**] Add method `useEDisMaxGlobally` to `FulltextInterface`
 - Set `phraseBigramFields`, `boostQuery`, `phraseSlop` only when `eDisMax` is enabled
