@@ -10,11 +10,13 @@ class BaseDummyEntity implements EntityInterface, FulltextInterface
 {
     private string $query;
     private array $fields;
+    private bool $useGlobalEdismax;
 
-    public function __construct(string $query = '', array $fields = ['jds', '*', 'score'])
+    public function __construct(string $query = '', array $fields = ['jds', '*', 'score'], bool $useGlobalEdismax = true)
     {
         $this->query = $query;
         $this->fields = $fields;
+        $this->useGlobalEdismax = $useGlobalEdismax;
     }
 
     public function getNumberOfRows(): int
@@ -65,5 +67,10 @@ class BaseDummyEntity implements EntityInterface, FulltextInterface
     public function isEDisMaxEnabled(): bool
     {
         return false;
+    }
+
+    public function useEDisMaxGlobally(): bool
+    {
+        return $this->useGlobalEdismax;
     }
 }

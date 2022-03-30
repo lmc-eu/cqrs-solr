@@ -6,6 +6,13 @@ use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\FulltextInterface;
 
 class FulltextDummyEntity implements FulltextInterface
 {
+    private bool $useGlobalEdismax;
+
+    public function __construct(bool $useGlobalEdismax = true)
+    {
+        $this->useGlobalEdismax = $useGlobalEdismax;
+    }
+
     public function getNumberOfRows(): int
     {
         return 20;
@@ -54,5 +61,10 @@ class FulltextDummyEntity implements FulltextInterface
     public function isEDisMaxEnabled(): bool
     {
         return true;
+    }
+
+    public function useEDisMaxGlobally(): bool
+    {
+        return $this->useGlobalEdismax;
     }
 }

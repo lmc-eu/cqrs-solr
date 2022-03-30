@@ -2,10 +2,13 @@
 
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
+use Lmc\Cqrs\Solr\Fixture\FulltextApplicatorTrait;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\FulltextBigramDummyEntity;
 
 class FulltextBigramApplicatorTest extends ApplicatorTestCase
 {
+    use FulltextApplicatorTrait;
+
     private FulltextBigramApplicator $fulltextBigramApplicator;
 
     protected function setUp(): void
@@ -15,10 +18,11 @@ class FulltextBigramApplicatorTest extends ApplicatorTestCase
 
     /**
      * @test
+     * @dataProvider provideGlobalEdismax
      */
-    public function shouldApplyFulltextOnQuery(): void
+    public function shouldApplyFulltextOnQuery(bool $isGlobalEdismax): void
     {
-        $entity = new FulltextBigramDummyEntity();
+        $entity = new FulltextBigramDummyEntity(true, $isGlobalEdismax);
         $this->assertTrue($this->fulltextBigramApplicator->supportEntity($entity));
         $this->fulltextBigramApplicator->setEntity($entity);
 
@@ -28,17 +32,43 @@ class FulltextBigramApplicatorTest extends ApplicatorTestCase
             $this->fulltextBigramApplicator,
         ]);
 
-        $this->assertStringContainsString('rows=' . $entity->getNumberOfRows(), $queryUri);
+        $this->assertApplyFulltextOnQuery($entity, $queryUri);
 
-        $this->assertStringContainsString('q=' . implode(' ', $entity->getKeywords()), $queryUri);
-        $this->assertStringContainsString('q.op=' . $entity->getDefaultQueryOperator(), $queryUri);
-        $this->assertStringContainsString('defType=edismax', $queryUri);
-        $this->assertStringContainsString('qf=' . implode(' ', $entity->getQueryFields()), $queryUri);
-        $this->assertStringContainsString('pf=' . implode(' ', $entity->getPhraseFields()), $queryUri);
-        $this->assertStringContainsString('q.alt=' . $entity->getQueryAlternative(), $queryUri);
-        $this->assertStringContainsString('tie=' . $entity->getTie(), $queryUri);
-        $this->assertStringContainsString('mm=' . $entity->getMinimumMatch(), $queryUri);
+        $parameters = $this->parseQueryUriParameters($queryUri);
 
-        $this->assertStringContainsString('pf2=' . implode('&pf2=', $entity->getPhraseBigramFields()), $queryUri);
+        if ($isGlobalEdismax) {
+            $phraseBigramFields = $this->assertParameterExists('pf2', $parameters);
+            $this->assertStringContainsString(implode(' ', $entity->getPhraseBigramFields()), $phraseBigramFields);
+        } else {
+            $query = $this->assertParameterExists('q', $parameters);
+
+            $this->assertStringContainsString('pf2=$phraseBigramFields', $query);
+            $phraseBigramFields = $this->assertParameterExists('phraseBigramFields', $parameters);
+            $this->assertSame(implode(' ', $entity->getPhraseBigramFields()), $phraseBigramFields);
+        }
+    }
+
+    /**
+     * @test
+     * @dataProvider provideGlobalEdismax
+     */
+    public function shouldApplyFulltextOnQueryWithDisabledEDisMax(bool $isGlobalEdismax): void
+    {
+        $entity = new FulltextBigramDummyEntity(false, $isGlobalEdismax);
+        $this->assertTrue($this->fulltextBigramApplicator->supportEntity($entity));
+        $this->fulltextBigramApplicator->setEntity($entity);
+
+        $queryUri = $this->getCustomQueryUri([
+            $this->getApplicator(EntityApplicator::class, $entity),
+            $this->getApplicator(FulltextApplicator::class, $entity),
+            $this->fulltextBigramApplicator,
+        ]);
+
+        $this->assertApplyFulltextOnQueryWithoutEdisMax($entity, $queryUri);
+
+        $parameters = $this->parseQueryUriParameters($queryUri);
+
+        $this->assertArrayNotHasKey('pf2', $parameters);
+        $this->assertArrayNotHasKey('phraseBigramFields', $parameters);
     }
 }
