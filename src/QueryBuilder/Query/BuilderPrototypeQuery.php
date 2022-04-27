@@ -8,15 +8,9 @@ use Solarium\QueryType\Select\Query\Query;
 
 final class BuilderPrototypeQuery extends AbstractSolrSelectQuery
 {
-    /** @var ApplicatorInterface[] */
-    private array $applicators;
-
-    /**
-     * @param ApplicatorInterface[] $applicators
-     */
-    public function __construct(array $applicators)
+    /** @param ApplicatorInterface[] $applicators */
+    public function __construct(private array $applicators)
     {
-        $this->applicators = $applicators;
     }
 
     public function prepareSelect(Query $select): Query

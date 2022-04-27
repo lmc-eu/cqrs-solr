@@ -3,10 +3,11 @@
 namespace Lmc\Cqrs\Solr\Solarium\QueryType\Select\ResponseParser;
 
 use Lmc\Cqrs\Solr\Solarium\QueryType\Select\Result\CountDistinctStatsResult;
+use Solarium\Component\AbstractComponent;
+use Solarium\Component\ComponentAwareQueryInterface;
 use Solarium\Component\ResponseParser\ComponentParserInterface;
 use Solarium\Component\Result\Stats\FacetValue;
 use Solarium\Component\Result\Stats\Stats;
-use Solarium\QueryType\Select\Query\Query;
 
 /**
  * This class is a copy of the \Solarium\QueryType\Select\ResponseParser\Component\Stats class.
@@ -14,13 +15,7 @@ use Solarium\QueryType\Select\Query\Query;
  */
 class CountDistinctStatsResponseParser implements ComponentParserInterface
 {
-    /**
-     * @param Query $query
-     * @param object $stats
-     * @param array $data
-     * @return Stats
-     */
-    public function parse($query, $stats, $data)
+    public function parse(?ComponentAwareQueryInterface $query, ?AbstractComponent $component, array $data): Stats
     {
         $results = [];
 

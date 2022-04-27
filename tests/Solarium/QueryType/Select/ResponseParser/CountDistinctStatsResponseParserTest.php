@@ -9,8 +9,7 @@ use Solarium\QueryType\Select\Query\Query;
 
 class CountDistinctStatsResponseParserTest extends TestCase
 {
-    /** @var CountDistinctStatsResponseParser */
-    private $parser;
+    private CountDistinctStatsResponseParser $parser;
 
     protected function setUp(): void
     {
@@ -42,7 +41,7 @@ class CountDistinctStatsResponseParserTest extends TestCase
             ],
         ];
 
-        $result = $this->parser->parse($this->createMock(Query::class), new \stdClass(), $data);
+        $result = $this->parser->parse($this->createMock(Query::class), null, $data);
 
         $result1 = $result->getResult('fieldA');
         $this->assertInstanceOf(CountDistinctStatsResult::class, $result1);
@@ -65,7 +64,7 @@ class CountDistinctStatsResponseParserTest extends TestCase
      */
     public function shouldParseNoData(): void
     {
-        $result = $this->parser->parse($this->createMock(Query::class), new \stdClass(), []);
+        $result = $this->parser->parse($this->createMock(Query::class), null, []);
         $this->assertEmpty(count($result));
     }
 }

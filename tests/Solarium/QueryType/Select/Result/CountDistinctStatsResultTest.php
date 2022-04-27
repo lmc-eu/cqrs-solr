@@ -8,20 +8,16 @@ class CountDistinctStatsResultTest extends TestCase
 {
     /**
      * @dataProvider countDistinctProvider
-     * @param int|null $expectedCountDistinct
      *
      * @test
      */
-    public function shouldGetCountDistinct(array $stats, $expectedCountDistinct): void
+    public function shouldGetCountDistinct(array $stats, ?int $expectedCountDistinct): void
     {
         $result = new CountDistinctStatsResult('field_1', $stats);
         $this->assertSame($expectedCountDistinct, $result->getCountDistinct());
     }
 
-    /**
-     * @return array
-     */
-    public function countDistinctProvider()
+    public function countDistinctProvider(): array
     {
         return [
             // $stats, $expectedCountDistinct

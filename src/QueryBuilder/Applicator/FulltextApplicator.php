@@ -4,6 +4,7 @@ namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\EntityInterface;
 use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\FulltextInterface;
+use Lmc\Cqrs\Solr\ValueObject\LocalParameter;
 use Solarium\QueryType\Select\Query\Query;
 
 class FulltextApplicator implements ApplicatorInterface
@@ -99,12 +100,12 @@ class FulltextApplicator implements ApplicatorInterface
         }
 
         if (!empty($phraseFields = $this->entity->getPhraseFields())) {
-            $localParameters['pf'] = 'pf=$phraseFields';
+            $localParameters['pf'] = LocalParameter::withPlaceholder('pf', '$phraseFields');
             $this->query->addParam('phraseFields', implode(' ', $phraseFields));
         }
 
-        $localParameters['tie'] = 'tie=' . $this->entity->getTie();
-        $localParameters['mm'] = 'mm=' . $this->entity->getMinimumMatch();
+        $localParameters['tie'] = LocalParameter::withValue('tie', (string) $this->entity->getTie());
+        $localParameters['mm'] = LocalParameter::withValue('mm', $this->entity->getMinimumMatch());
 
         $this->query->addParam('q.alt', $this->entity->getQueryAlternative());
 

@@ -6,10 +6,7 @@ use Solarium\Component\Result\Stats\Result;
 
 class CountDistinctStatsResult extends Result
 {
-    /**
-     * @return int|null
-     */
-    public function getCountDistinct()
+    public function getCountDistinct(): ?int
     {
         return isset($this->stats['countDistinct']) ? (int) $this->stats['countDistinct'] : null;
     }

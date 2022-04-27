@@ -4,7 +4,9 @@ namespace Lmc\Cqrs\Solr;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Solarium\Client;
+use Solarium\Core\Client\Adapter\AdapterInterface;
 use Solarium\Core\Query\Result\ResultInterface;
 use Solarium\QueryType\Select\Query\Query;
 
@@ -17,6 +19,14 @@ abstract class AbstractSolrTestCase extends TestCase
     protected function setUpClient(): void
     {
         $this->client = $this->createMock(Client::class);
+    }
+
+    protected function createSolrClient(): Client
+    {
+        return new Client(
+            $this->createMock(AdapterInterface::class),
+            $this->createMock(EventDispatcherInterface::class)
+        );
     }
 
     /** @return ResultInterface|MockObject */
@@ -62,5 +72,26 @@ abstract class AbstractSolrTestCase extends TestCase
             ->method('execute')
             ->with($query, $endpoint)
             ->willReturn($result);
+    }
+
+    protected function assertQueryStringContainsPart(string $expected, string $queryString): void
+    {
+        $message = function () use ($expected, $queryString) {
+            [$_, $queryString] = explode('?', $queryString);
+            $parts = explode('&', $queryString);
+
+            return sprintf(
+                "Expected \"%s\" was not found in query string: \"%s\"\nwith parts:\n - %s",
+                urldecode($expected),
+                urldecode($queryString),
+                implode("\n - ", array_map(urldecode(...), $parts))
+            );
+        };
+
+        $this->assertStringContainsString(
+            $expected,
+            $queryString,
+            $message()
+        );
     }
 }
