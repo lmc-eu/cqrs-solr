@@ -2,22 +2,21 @@
 
 namespace Lmc\Cqrs\Solr\ValueObject;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class SolrFieldTest extends TestCase
 {
-    /**
-     * @dataProvider fieldDataProvider
-     *
-     * @test
-     */
+    #[Test]
+    #[DataProvider('provideFieldData')]
     public function shouldAssembleSolrFieldString(string $field, string $localParameter, int $proximity, int $boost, string $expectedString): void
     {
         $solrField = new SolrField($field, $localParameter, $proximity, $boost);
         $this->assertEquals($expectedString, (string) $solrField);
     }
 
-    public function fieldDataProvider(): array
+    public static function provideFieldData(): array
     {
         return [
             'Only field' => [

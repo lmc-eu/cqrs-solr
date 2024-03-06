@@ -3,8 +3,9 @@
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\FilterDummyEntity;
+use PHPUnit\Framework\Attributes\Test;
 
-class FilterApplicatorTest extends ApplicatorTestCase
+class FilterApplicatorTest extends AbstractApplicatorTestCase
 {
     private FilterApplicator $filterApplicator;
 
@@ -13,9 +14,7 @@ class FilterApplicatorTest extends ApplicatorTestCase
         $this->filterApplicator = new FilterApplicator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldApplyFilterApplicatorOnQuery(): void
     {
         $entity = new FilterDummyEntity();

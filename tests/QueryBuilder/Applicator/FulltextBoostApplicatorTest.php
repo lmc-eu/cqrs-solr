@@ -5,8 +5,10 @@ namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 use Lmc\Cqrs\Solr\Fixture\FulltextApplicatorTrait;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\FulltextBigramBoostDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\FulltextBoostDummyEntity;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
-class FulltextBoostApplicatorTest extends ApplicatorTestCase
+class FulltextBoostApplicatorTest extends AbstractApplicatorTestCase
 {
     use FulltextApplicatorTrait;
 
@@ -17,10 +19,8 @@ class FulltextBoostApplicatorTest extends ApplicatorTestCase
         $this->fulltextBoostApplicator = new FulltextBoostApplicator();
     }
 
-    /**
-     * @test
-     * @dataProvider provideGlobalEdismax
-     */
+    #[Test]
+    #[DataProvider('provideGlobalEdismax')]
     public function shouldApplyBoostOnQuery(bool $isGlobalEdismax): void
     {
         $entity = new FulltextBoostDummyEntity(true, $isGlobalEdismax);
@@ -59,10 +59,8 @@ class FulltextBoostApplicatorTest extends ApplicatorTestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider provideGlobalEdismax
-     */
+    #[Test]
+    #[DataProvider('provideGlobalEdismax')]
     public function shouldApplyBoostAndBigramOptionsOnQuery(bool $isGlobalEdismax): void
     {
         $entity = new FulltextBigramBoostDummyEntity(true, $isGlobalEdismax);
@@ -111,10 +109,8 @@ class FulltextBoostApplicatorTest extends ApplicatorTestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider provideGlobalEdismax
-     */
+    #[Test]
+    #[DataProvider('provideGlobalEdismax')]
     public function shouldApplyFulltextOnQueryWithDisabledEDisMax(bool $isGlobalEdismax): void
     {
         $entity = new FulltextBigramBoostDummyEntity(false, $isGlobalEdismax);

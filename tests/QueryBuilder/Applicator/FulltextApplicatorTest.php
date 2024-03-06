@@ -5,8 +5,10 @@ namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 use Lmc\Cqrs\Solr\Fixture\FulltextApplicatorTrait;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\DisabledEDisMaxDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\FulltextDummyEntity;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
-class FulltextApplicatorTest extends ApplicatorTestCase
+class FulltextApplicatorTest extends AbstractApplicatorTestCase
 {
     use FulltextApplicatorTrait;
 
@@ -17,10 +19,8 @@ class FulltextApplicatorTest extends ApplicatorTestCase
         $this->fulltextApplicator = new FulltextApplicator();
     }
 
-    /**
-     * @test
-     * @dataProvider provideGlobalEdismax
-     */
+    #[Test]
+    #[DataProvider('provideGlobalEdismax')]
     public function shouldApplyFulltextOnQuery(bool $isGlobalEdismax): void
     {
         $entity = new FulltextDummyEntity($isGlobalEdismax);
@@ -35,10 +35,8 @@ class FulltextApplicatorTest extends ApplicatorTestCase
         $this->assertApplyFulltextOnQuery($entity, $queryUri);
     }
 
-    /**
-     * @test
-     * @dataProvider provideGlobalEdismax
-     */
+    #[Test]
+    #[DataProvider('provideGlobalEdismax')]
     public function shouldApplyFulltextOnQueryWithDisabledEDisMax(bool $isGlobalEdismax): void
     {
         $entity = new DisabledEDisMaxDummyEntity($isGlobalEdismax);

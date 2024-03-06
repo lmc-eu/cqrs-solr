@@ -2,6 +2,7 @@
 
 namespace Lmc\Cqrs\Solr;
 
+use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -15,7 +16,7 @@ abstract class AbstractSolrTestCase extends TestCase
     /** @var Client|MockObject */
     protected Client $client;
 
-    /** @before */
+    #[Before]
     protected function setUpClient(): void
     {
         $this->client = $this->createMock(Client::class);

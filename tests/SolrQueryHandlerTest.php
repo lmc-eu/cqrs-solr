@@ -9,6 +9,7 @@ use Lmc\Cqrs\Solr\QueryBuilder\Fixture\BaseDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\QueryBuilder;
 use Lmc\Cqrs\Types\ValueObject\OnErrorCallback;
 use Lmc\Cqrs\Types\ValueObject\OnSuccessCallback;
+use PHPUnit\Framework\Attributes\Test;
 use Solarium\Core\Query\Result\ResultInterface;
 
 class SolrQueryHandlerTest extends AbstractSolrTestCase
@@ -20,9 +21,7 @@ class SolrQueryHandlerTest extends AbstractSolrTestCase
         $this->solrQueryHandler = new SolrQueryHandler($this->client);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchSolrQuery(): void
     {
         $fields = ['field'];
@@ -46,9 +45,7 @@ class SolrQueryHandlerTest extends AbstractSolrTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldFetchBuiltSolrQueryWithCustomEndpoint(): void
     {
         $entity = new BaseDummyEntity('query');

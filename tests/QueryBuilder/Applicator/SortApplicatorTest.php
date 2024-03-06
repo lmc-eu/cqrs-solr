@@ -3,8 +3,9 @@
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\SortDummyEntity;
+use PHPUnit\Framework\Attributes\Test;
 
-class SortApplicatorTest extends ApplicatorTestCase
+class SortApplicatorTest extends AbstractApplicatorTestCase
 {
     private SortApplicator $sortApplicator;
 
@@ -13,9 +14,7 @@ class SortApplicatorTest extends ApplicatorTestCase
         $this->sortApplicator = new SortApplicator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldApplySortOnQuery(): void
     {
         $entity = new SortDummyEntity();

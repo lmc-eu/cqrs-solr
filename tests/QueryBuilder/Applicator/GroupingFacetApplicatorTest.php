@@ -3,8 +3,9 @@
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\GroupingFacetDummyEntity;
+use PHPUnit\Framework\Attributes\Test;
 
-class GroupingFacetApplicatorTest extends ApplicatorTestCase
+class GroupingFacetApplicatorTest extends AbstractApplicatorTestCase
 {
     private GroupingFacetApplicator $groupingFacetApplicator;
 
@@ -13,9 +14,7 @@ class GroupingFacetApplicatorTest extends ApplicatorTestCase
         $this->groupingFacetApplicator = new GroupingFacetApplicator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldApplyGroupingOnQuery(): void
     {
         $entity = new GroupingFacetDummyEntity();

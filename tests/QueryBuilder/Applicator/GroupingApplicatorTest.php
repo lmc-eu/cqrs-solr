@@ -3,8 +3,9 @@
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\GroupingDummyEntity;
+use PHPUnit\Framework\Attributes\Test;
 
-class GroupingApplicatorTest extends ApplicatorTestCase
+class GroupingApplicatorTest extends AbstractApplicatorTestCase
 {
     private GroupingApplicator $groupingApplicator;
 
@@ -13,9 +14,7 @@ class GroupingApplicatorTest extends ApplicatorTestCase
         $this->groupingApplicator = new GroupingApplicator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldApplyGroupingOnQuery(): void
     {
         $entity = new GroupingDummyEntity();

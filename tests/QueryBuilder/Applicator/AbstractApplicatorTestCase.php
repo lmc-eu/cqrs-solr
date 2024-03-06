@@ -6,7 +6,7 @@ use Lmc\Cqrs\Solr\AbstractSolrTestCase;
 use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\EntityInterface;
 use Lmc\Cqrs\Solr\QueryBuilder\Query\BuilderPrototypeQuery;
 
-class ApplicatorTestCase extends AbstractSolrTestCase
+abstract class AbstractApplicatorTestCase extends AbstractSolrTestCase
 {
     protected function getApplicator(string $applicatorClass, EntityInterface $entity): ApplicatorInterface
     {

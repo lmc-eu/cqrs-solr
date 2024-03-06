@@ -3,6 +3,7 @@
 namespace Lmc\Cqrs\Solr\Solarium\QueryType\Select\ResponseParser;
 
 use Lmc\Cqrs\Solr\Solarium\QueryType\Select\Result\CountDistinctStatsResult;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Solarium\Component\Result\Stats\FacetValue;
 use Solarium\QueryType\Select\Query\Query;
@@ -16,9 +17,7 @@ class CountDistinctStatsResponseParserTest extends TestCase
         $this->parser = new CountDistinctStatsResponseParser();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseData(): void
     {
         $data = [
@@ -59,9 +58,7 @@ class CountDistinctStatsResponseParserTest extends TestCase
         $this->assertEquals(5, $facet->getMin());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldParseNoData(): void
     {
         $result = $this->parser->parse($this->createMock(Query::class), null, []);

@@ -3,8 +3,9 @@
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\ParameterizedDummyEntity;
+use PHPUnit\Framework\Attributes\Test;
 
-class ParameterizedApplicatorTest extends ApplicatorTestCase
+class ParameterizedApplicatorTest extends AbstractApplicatorTestCase
 {
     private ParameterizedApplicator $parameterizedApplicator;
 
@@ -13,9 +14,7 @@ class ParameterizedApplicatorTest extends ApplicatorTestCase
         $this->parameterizedApplicator = new ParameterizedApplicator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldApplySortOnQuery(): void
     {
         $entity = new ParameterizedDummyEntity();

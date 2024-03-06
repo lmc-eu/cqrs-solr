@@ -6,7 +6,7 @@ use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\FulltextInterface;
 
 trait FulltextApplicatorTrait
 {
-    public function provideGlobalEdismax(): array
+    public static function provideGlobalEdismax(): array
     {
         return [
             // isGlobal

@@ -3,8 +3,9 @@
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\StatsDummyEntity;
+use PHPUnit\Framework\Attributes\Test;
 
-class StatsApplicatorTest extends ApplicatorTestCase
+class StatsApplicatorTest extends AbstractApplicatorTestCase
 {
     private StatsApplicator $applicator;
 
@@ -13,9 +14,7 @@ class StatsApplicatorTest extends ApplicatorTestCase
         $this->applicator = new StatsApplicator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldApplyStatsOnQuery(): void
     {
         $entity = new StatsDummyEntity();

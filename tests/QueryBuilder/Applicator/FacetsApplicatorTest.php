@@ -3,8 +3,9 @@
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\FacetsDummyEntity;
+use PHPUnit\Framework\Attributes\Test;
 
-class FacetsApplicatorTest extends ApplicatorTestCase
+class FacetsApplicatorTest extends AbstractApplicatorTestCase
 {
     private FacetsApplicator $facetsApplicator;
 
@@ -13,9 +14,7 @@ class FacetsApplicatorTest extends ApplicatorTestCase
         $this->facetsApplicator = new FacetsApplicator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldApplyFacetsOnQuery(): void
     {
         $entity = new FacetsDummyEntity();
