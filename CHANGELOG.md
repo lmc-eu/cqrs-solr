@@ -3,6 +3,8 @@
 <!-- There should always be "Unreleased" section at the beginning. -->
 
 ## Unreleased
+- Drop support for php 8.1
+- Update dependencies
 
 ## 3.0.0 - 2022-04-27
 - Require php 8.1

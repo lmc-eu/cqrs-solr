@@ -16,6 +16,8 @@ use Lmc\Cqrs\Solr\QueryBuilder\Fixture\GroupingFacetDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\ParameterizedDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\SortDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\StatsDummyEntity;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ApplicatorFactoryTest extends TestCase
@@ -67,11 +69,9 @@ class ApplicatorFactoryTest extends TestCase
 
     /**
      * @param string[] $expected
-     *
-     * @dataProvider provideEntities
-     *
-     * @test
      */
+    #[Test]
+    #[DataProvider('provideEntities')]
     public function shouldGetFixturesForEntity(EntityInterface $entity, array $expected): void
     {
         $applicators = $this->applicatorFactory->getApplicators($entity);
@@ -85,7 +85,7 @@ class ApplicatorFactoryTest extends TestCase
         }
     }
 
-    public function provideEntities(): array
+    public static function provideEntities(): array
     {
         return [
             [

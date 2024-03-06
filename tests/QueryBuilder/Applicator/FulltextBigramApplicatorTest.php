@@ -4,8 +4,10 @@ namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\Fixture\FulltextApplicatorTrait;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\FulltextBigramDummyEntity;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
-class FulltextBigramApplicatorTest extends ApplicatorTestCase
+class FulltextBigramApplicatorTest extends AbstractApplicatorTestCase
 {
     use FulltextApplicatorTrait;
 
@@ -16,10 +18,8 @@ class FulltextBigramApplicatorTest extends ApplicatorTestCase
         $this->fulltextBigramApplicator = new FulltextBigramApplicator();
     }
 
-    /**
-     * @test
-     * @dataProvider provideGlobalEdismax
-     */
+    #[Test]
+    #[DataProvider('provideGlobalEdismax')]
     public function shouldApplyFulltextOnQuery(bool $isGlobalEdismax): void
     {
         $entity = new FulltextBigramDummyEntity(true, $isGlobalEdismax);
@@ -48,10 +48,8 @@ class FulltextBigramApplicatorTest extends ApplicatorTestCase
         }
     }
 
-    /**
-     * @test
-     * @dataProvider provideGlobalEdismax
-     */
+    #[Test]
+    #[DataProvider('provideGlobalEdismax')]
     public function shouldApplyFulltextOnQueryWithDisabledEDisMax(bool $isGlobalEdismax): void
     {
         $entity = new FulltextBigramDummyEntity(false, $isGlobalEdismax);

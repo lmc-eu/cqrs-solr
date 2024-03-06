@@ -3,8 +3,9 @@
 namespace Lmc\Cqrs\Solr\QueryBuilder\Applicator;
 
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\BaseDummyEntity;
+use PHPUnit\Framework\Attributes\Test;
 
-class EntityApplicatorTest extends ApplicatorTestCase
+class EntityApplicatorTest extends AbstractApplicatorTestCase
 {
     private EntityApplicator $entityApplicator;
 
@@ -13,9 +14,7 @@ class EntityApplicatorTest extends ApplicatorTestCase
         $this->entityApplicator = new EntityApplicator();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldApplyEntityInterface(): void
     {
         $baseEntity = new BaseDummyEntity();
@@ -28,9 +27,7 @@ class EntityApplicatorTest extends ApplicatorTestCase
         $this->assertStringContainsString('fl=' . implode(',', $baseEntity->getFields()), $queryUri);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldUsePlaceholderForAllFields(): void
     {
         $baseEntity = new BaseDummyEntity('', []);

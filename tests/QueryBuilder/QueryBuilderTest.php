@@ -32,6 +32,8 @@ use Lmc\Cqrs\Solr\QueryBuilder\Fixture\ParameterizedDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\SortDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Fixture\StatsDummyEntity;
 use Lmc\Cqrs\Solr\QueryBuilder\Query\BuilderPrototypeQuery;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Solarium\Core\Client\Endpoint;
 
 class QueryBuilderTest extends AbstractSolrTestCase
@@ -67,11 +69,8 @@ class QueryBuilderTest extends AbstractSolrTestCase
         $this->queryBuilderWithApplicators = new QueryBuilder($applicatorFactory);
     }
 
-    /**
-     * @dataProvider provideEntity
-     *
-     * @test
-     */
+    #[Test]
+    #[DataProvider('provideEntity')]
     public function shouldBuildQuery(EntityInterface $entity): void
     {
         $query = $this->queryBuilderWithoutApplicators->buildQuery($entity);
@@ -81,7 +80,7 @@ class QueryBuilderTest extends AbstractSolrTestCase
         $this->assertInstanceOf(BuilderPrototypeQuery::class, $query);
     }
 
-    public function provideEntity(): array
+    public static function provideEntity(): array
     {
         $defaultEmptyQuery = 'q=' . urlencode('*:*');
 
@@ -272,11 +271,8 @@ class QueryBuilderTest extends AbstractSolrTestCase
         ];
     }
 
-    /**
-     * @dataProvider provideEntity
-     *
-     * @test
-     */
+    #[Test]
+    #[DataProvider('provideEntity')]
     public function shouldBuildQueryWithApplicators(EntityInterface $entity, array $expectedParts): void
     {
         $expectedParts[] = 'select?omitHeader=true';
@@ -296,11 +292,8 @@ class QueryBuilderTest extends AbstractSolrTestCase
         }
     }
 
-    /**
-     * @dataProvider provideQueryOptions
-     *
-     * @test
-     */
+    #[Test]
+    #[DataProvider('provideQueryOptions')]
     public function shouldSetQueryOptions(array $queryOptionsParameters, string $expectedFullQuery): void
     {
         $entity = new BaseDummyEntity((string) $queryOptionsParameters['query']);
@@ -311,7 +304,7 @@ class QueryBuilderTest extends AbstractSolrTestCase
         $this->assertSame($expectedFullQuery, $query->__toString());
     }
 
-    public function provideQueryOptions(): array
+    public static function provideQueryOptions(): array
     {
         return [
             'query with q parameter' => [
@@ -325,9 +318,7 @@ class QueryBuilderTest extends AbstractSolrTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldProfileUsedValues(): void
     {
         $client = $this->createSolrClient();
