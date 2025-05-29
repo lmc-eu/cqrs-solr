@@ -3,6 +3,7 @@
 <!-- There should always be "Unreleased" section at the beginning. -->
 
 ## Unreleased
+- Update coding standards
 
 ## 3.1.0 - 2024-03-06
 - Drop support for php 8.1

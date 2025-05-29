@@ -34,7 +34,7 @@ class GroupingApplicatorTest extends AbstractApplicatorTestCase
         $this->assertStringContainsString('group.limit=' . $entity->getGroupingLimit(), $queryUri);
         $this->assertStringContainsString(
             'group.ngroups=' . ($entity->getNumberOfGroups() ? 'true' : 'false'),
-            $queryUri
+            $queryUri,
         );
     }
 }

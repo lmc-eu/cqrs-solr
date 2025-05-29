@@ -6,9 +6,7 @@ use Solarium\Core\Query\AbstractQuery;
 
 class SolrRequest
 {
-    public function __construct(private AbstractQuery $query, private ?string $endpoint = null)
-    {
-    }
+    public function __construct(private AbstractQuery $query, private ?string $endpoint = null) {}
 
     public function getQuery(): AbstractQuery
     {

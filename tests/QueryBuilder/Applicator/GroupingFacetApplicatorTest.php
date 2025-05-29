@@ -36,7 +36,7 @@ class GroupingFacetApplicatorTest extends AbstractApplicatorTestCase
         $this->assertStringContainsString('group.limit=' . $entity->getGroupingLimit(), $queryUri);
         $this->assertStringContainsString(
             'group.ngroups=' . ($entity->getNumberOfGroups() ? 'true' : 'false'),
-            $queryUri
+            $queryUri,
         );
 
         $this->assertStringContainsString('facet=true', $queryUri);
@@ -55,9 +55,9 @@ class GroupingFacetApplicatorTest extends AbstractApplicatorTestCase
                 $facetField,
                 $globalExcludes,
                 implode(',', $entity->getExcludesForFacet($facetField)),
-                $entity->getField($facetField)
+                $entity->getField($facetField),
             ),
-            $queryUri
+            $queryUri,
         );
 
         $pivotField = $facetFields[1];
@@ -66,9 +66,9 @@ class GroupingFacetApplicatorTest extends AbstractApplicatorTestCase
                 'facet.pivot={!key=%s ex=%s}%s',
                 $pivotField,
                 $globalExcludes,
-                $entity->getPivotFields($pivotField)
+                $entity->getPivotFields($pivotField),
             ),
-            $queryUri
+            $queryUri,
         );
 
         $intervalField = $facetFields[2];
@@ -81,9 +81,9 @@ class GroupingFacetApplicatorTest extends AbstractApplicatorTestCase
                     implode('-', $range),
                     $intervalField,
                     $range[0],
-                    $range[1]
+                    $range[1],
                 ),
-                $queryUri
+                $queryUri,
             );
         }
 

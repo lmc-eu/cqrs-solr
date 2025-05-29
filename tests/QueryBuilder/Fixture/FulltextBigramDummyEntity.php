@@ -7,12 +7,10 @@ use Lmc\Cqrs\Solr\QueryBuilder\EntityInterface\FulltextBigramInterface;
 class FulltextBigramDummyEntity implements FulltextBigramInterface
 {
     private bool $isEDisMaxEnabled;
-    private bool $useGlobalEdismax;
 
-    public function __construct(bool $isEdismaxEnabled = true, bool $useGlobalEdismax = true)
+    public function __construct(bool $isEdismaxEnabled = true, private bool $useGlobalEdismax = true)
     {
         $this->isEDisMaxEnabled = $isEdismaxEnabled;
-        $this->useGlobalEdismax = $useGlobalEdismax;
     }
 
     public function getNumberOfRows(): int

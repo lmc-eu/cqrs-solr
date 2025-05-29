@@ -13,7 +13,7 @@ class CountDistinctStatsComponentTest extends TestCase
     {
         $this->assertInstanceOf(
             CountDistinctStatsResponseParser::class,
-            (new CountDistinctStatsComponent())->getResponseParser()
+            (new CountDistinctStatsComponent())->getResponseParser(),
         );
     }
 }

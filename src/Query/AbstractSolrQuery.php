@@ -16,6 +16,11 @@ abstract class AbstractSolrQuery implements QueryInterface, CacheableInterface, 
 {
     private ?string $endpoint = null;
 
+    public function __toString(): string
+    {
+        return $this->getRequestUrl();
+    }
+
     final public function getRequestType(): string
     {
         return SolrRequest::class;
@@ -26,7 +31,7 @@ abstract class AbstractSolrQuery implements QueryInterface, CacheableInterface, 
     public function getCacheKey(): CacheKey
     {
         return new CacheKey(
-            sprintf('%s:%s:%s:%s', 'solr', $this->getEndpoint(), static::class, md5($this->getRequestUrl()))
+            sprintf('%s:%s:%s:%s', 'solr', $this->getEndpoint(), static::class, md5($this->getRequestUrl())),
         );
     }
 
@@ -62,10 +67,5 @@ abstract class AbstractSolrQuery implements QueryInterface, CacheableInterface, 
     public function setEndpoint(?string $endpoint): void
     {
         $this->endpoint = $endpoint;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getRequestUrl();
     }
 }

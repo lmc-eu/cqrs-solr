@@ -12,8 +12,8 @@
         "solarium/solarium": "^6.2.3"
     },
     "require-dev": {
+        "almacareer/coding-standard": "^4.2",
         "ergebnis/composer-normalize": "^2.5",
-        "lmc/coding-standard": "^3.3",
         "php-parallel-lint/php-parallel-lint": "^1.2",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.4",
@@ -48,9 +48,9 @@
             "@cs",
             "@phpstan"
         ],
-        "cs": "vendor/bin/ecs check --ansi src/ tests/ ecs.php",
+        "cs": "vendor/bin/ecs check --ansi",
         "fix": [
-            "vendor/bin/ecs check --ansi --clear-cache --fix src/ tests/ ecs.php",
+            "vendor/bin/ecs check --ansi --clear-cache --fix",
             "@composer normalize"
         ],
         "lint": [
