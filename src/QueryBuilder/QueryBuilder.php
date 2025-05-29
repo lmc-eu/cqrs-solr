@@ -14,7 +14,10 @@ class QueryBuilder
 
     public function buildQuery(EntityInterface $entity): BuilderPrototypeQuery
     {
-        return new BuilderPrototypeQuery($this->applicatorFactory->getApplicators($entity));
+        return new BuilderPrototypeQuery(
+            $this->applicatorFactory->getApplicators($entity),
+            [BuilderPrototypeQuery::METADATA_KEY_ENTITY => get_class($entity)]
+        );
     }
 
     public function buildQueryWithEndpoint(EntityInterface $entity, string $endpoint): BuilderPrototypeQuery

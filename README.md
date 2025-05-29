@@ -68,6 +68,39 @@ This is a special type of a `SolrSelectQuery` it also extends an `AbstractSolrSe
 
 It is a Query, which `QueryBuilder` creates for you.
 
+#### Metadata
+The `BuilderPrototypeQuery` has a field `metadata`, which you can use to store any metadata you want. 
+It is useful for storing a data, which you want to use in a `ResponseDecoder::supports` method to build a decoder for a specific query.
+
+```php
+class PersonSearch implements EntityInterface { /* code */ }
+
+class PersonsResult implements DecodedValueInterface { /* code */ }
+
+function searchPersons(QueryBuilder $builder, QueryFetcherInterface $fetcher, PersonSearch $entity): PersonsResult 
+{
+    $query = $builder->buildQuery($entity); // entity class is automatically passed to $query
+
+    return $fetcher->fetchAndReturn($query);
+}
+
+/** @phpstan-implements ResponseDecoderInterface<Solarium\QueryType\Select\Result\Result, PersonsResult> */
+class PersonsDecoder implements ResponseDecoderInterface
+{
+    public function supports(mixed $response, mixed $initiator): bool
+    {
+        return $response instanceof Solarium\QueryType\Select\Result\Result
+            && $initiator instanceof BuilderPrototypeQuery
+            && $initiator->getMetadata(BuilderPrototypeQuery::METADATA_KEY_ENTITY) === PersonSearch::class;
+    }
+
+    public function decode(mixed $response): mixed
+    {
+        return PersonsResult::decode($response);
+    }
+}
+```
+
 ## Query Handlers
 It is responsible for handling a specific Query request and passing a result into `OnSuccess` callback. [See more here](https://github.com/lmc-eu/cqrs-types#query-handler-interface).
 
