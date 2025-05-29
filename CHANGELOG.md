@@ -3,6 +3,11 @@
 <!-- There should always be "Unreleased" section at the beginning. -->
 
 ## Unreleased
+- Add metadata to `BuildPrototypeQuery`
+  - `BuildPrototypeQuery::setMetadata`
+  - `BuildPrototypeQuery::getMetadata`
+- Profile metadata on `BuildPrototypeQuery`
+- Profile used applicators on `BuildPrototypeQuery`
 
 ## 3.0.0 - 2022-04-27
 - Require php 8.1

@@ -351,5 +351,31 @@ class QueryBuilderTest extends AbstractSolrTestCase
             $profilerData['Endpoint.details'],
             'Profiled endpoint should not be a real instance of endpoint, but it should be cloned, so it remains unchanged in time of profiling.'
         );
+
+        $this->assertArrayHasKey('Applicators', $profilerData);
+        $this->assertIsArray($profilerData['Applicators']);
+        $this->assertSame(
+            [
+                EntityApplicator::class,
+                FulltextApplicator::class,
+            ],
+            $profilerData['Applicators'],
+        );
+
+        $this->assertArrayHasKey('Metadata', $profilerData);
+        $this->assertIsArray($profilerData['Metadata']);
+        $this->assertArrayHasKey(BuilderPrototypeQuery::METADATA_KEY_ENTITY, $profilerData['Metadata']);
+        $this->assertSame(BaseDummyEntity::class, $profilerData['Metadata'][BuilderPrototypeQuery::METADATA_KEY_ENTITY]);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldPassEntityToMetadataAfterBuildQuery(): void
+    {
+        $entity = new BaseDummyEntity('query');
+        $query = $this->queryBuilderWithApplicators->buildQuery($entity);
+
+        $this->assertSame(BaseDummyEntity::class, $query->getMetadata(BuilderPrototypeQuery::METADATA_KEY_ENTITY));
     }
 }
