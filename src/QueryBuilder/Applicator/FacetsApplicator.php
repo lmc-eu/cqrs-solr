@@ -102,7 +102,7 @@ class FacetsApplicator implements ApplicatorInterface
 
                 $facet = $facet->createQuery(
                     sprintf('%s-%s', $from, $to),
-                    sprintf('%s:[%s TO %s]', $facetField, $from, $to)
+                    sprintf('%s:[%s TO %s]', $facetField, $from, $to),
                 );
             }
         }

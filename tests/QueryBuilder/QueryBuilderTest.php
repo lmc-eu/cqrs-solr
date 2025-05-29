@@ -340,7 +340,7 @@ class QueryBuilderTest extends AbstractSolrTestCase
         $this->assertNotSame(
             $client->getEndpoint($query->getEndpoint()),
             $profilerData['Endpoint.details'],
-            'Profiled endpoint should not be a real instance of endpoint, but it should be cloned, so it remains unchanged in time of profiling.'
+            'Profiled endpoint should not be a real instance of endpoint, but it should be cloned, so it remains unchanged in time of profiling.',
         );
     }
 }

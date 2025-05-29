@@ -42,9 +42,9 @@ class FiltersApplicatorTest extends AbstractApplicatorTestCase
                 sprintf(
                     'fq={!tag=%s}%s',
                     implode(',', $tags),
-                    $entity->getFilterQuery($filterQueryName)
+                    $entity->getFilterQuery($filterQueryName),
                 ),
-                $queryUri
+                $queryUri,
             );
         }
     }

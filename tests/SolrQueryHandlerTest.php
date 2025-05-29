@@ -39,9 +39,9 @@ class SolrQueryHandlerTest extends AbstractSolrTestCase
         $this->solrQueryHandler->handle(
             $query,
             new OnSuccessCallback(
-                fn (ResultInterface $result) => $this->assertSame($data, $result->getData())
+                fn(ResultInterface $result) => $this->assertSame($data, $result->getData()),
             ),
-            new OnErrorCallback(fn (\Throwable $error) => $this->fail($error->getMessage()))
+            new OnErrorCallback(fn(\Throwable $error) => $this->fail($error->getMessage())),
         );
     }
 
@@ -66,9 +66,9 @@ class SolrQueryHandlerTest extends AbstractSolrTestCase
         $this->solrQueryHandler->handle(
             $query,
             new OnSuccessCallback(
-                fn (ResultInterface $result) => $this->assertSame($data, $result->getData())
+                fn(ResultInterface $result) => $this->assertSame($data, $result->getData()),
             ),
-            new OnErrorCallback(fn (\Throwable $error) => $this->fail($error->getMessage()))
+            new OnErrorCallback(fn(\Throwable $error) => $this->fail($error->getMessage())),
         );
     }
 }

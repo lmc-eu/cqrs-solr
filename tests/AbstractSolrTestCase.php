@@ -26,7 +26,7 @@ abstract class AbstractSolrTestCase extends TestCase
     {
         return new Client(
             $this->createMock(AdapterInterface::class),
-            $this->createMock(EventDispatcherInterface::class)
+            $this->createMock(EventDispatcherInterface::class),
         );
     }
 
@@ -67,7 +67,7 @@ abstract class AbstractSolrTestCase extends TestCase
     protected function expectClientToExecuteSelectQueryOnce(
         Query $query,
         ?string $endpoint,
-        ResultInterface $result
+        ResultInterface $result,
     ): void {
         $this->client->expects($this->once())
             ->method('execute')
@@ -85,14 +85,14 @@ abstract class AbstractSolrTestCase extends TestCase
                 "Expected \"%s\" was not found in query string: \"%s\"\nwith parts:\n - %s",
                 urldecode($expected),
                 urldecode($queryString),
-                implode("\n - ", array_map(urldecode(...), $parts))
+                implode("\n - ", array_map(urldecode(...), $parts)),
             );
         };
 
         $this->assertStringContainsString(
             $expected,
             $queryString,
-            $message()
+            $message(),
         );
     }
 }

@@ -36,7 +36,7 @@ abstract class AbstractSolrSelectQuery extends AbstractSolrQuery implements Inje
 
         return new SolrRequest(
             $this->prepareQuery($this->client->createSelect()),
-            $this->getEndpoint()
+            $this->getEndpoint(),
         );
     }
 
@@ -58,7 +58,7 @@ abstract class AbstractSolrSelectQuery extends AbstractSolrQuery implements Inje
     public function getProfilerData(): ?array
     {
         return parent::getProfilerData() + [
-                'Endpoint.details' => clone $this->client->getEndpoint($this->getEndpoint()),
-            ];
+            'Endpoint.details' => clone $this->client->getEndpoint($this->getEndpoint()),
+        ];
     }
 }

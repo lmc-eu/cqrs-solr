@@ -51,8 +51,8 @@ abstract class AbstractApplicatorTestCase extends AbstractSolrTestCase
             sprintf(
                 'Parameter "%s" does not exists in [%s].',
                 $expectedKey,
-                implode(', ', array_keys($parameters))
-            )
+                implode(', ', array_keys($parameters)),
+            ),
         );
 
         return $parameters[$expectedKey];

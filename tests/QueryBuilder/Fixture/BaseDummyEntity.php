@@ -8,16 +8,7 @@ use Solarium\QueryType\Select\Query\Query;
 
 class BaseDummyEntity implements EntityInterface, FulltextInterface
 {
-    private string $query;
-    private array $fields;
-    private bool $useGlobalEdismax;
-
-    public function __construct(string $query = '', array $fields = ['jds', '*', 'score'], bool $useGlobalEdismax = true)
-    {
-        $this->query = $query;
-        $this->fields = $fields;
-        $this->useGlobalEdismax = $useGlobalEdismax;
-    }
+    public function __construct(private string $query = '', private array $fields = ['jds', '*', 'score'], private bool $useGlobalEdismax = true) {}
 
     public function getNumberOfRows(): int
     {

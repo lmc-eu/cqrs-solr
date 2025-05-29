@@ -13,7 +13,7 @@ class SolrField implements \Stringable
         private string $value,
         private string $localParameter = '',
         private int $proximity = 0,
-        private int $boost = 0
+        private int $boost = 0,
     ) {
         $this->value = $this->escapePhrase($value);
     }

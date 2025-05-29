@@ -9,11 +9,6 @@ class ApplicatorFactory
     /** @var ApplicatorInterface[] */
     private array $availableApplicators;
 
-    public static function getDefaultPriority(): int
-    {
-        return 1;
-    }
-
     /**
      * @param ApplicatorInterface[] $availableApplicators
      */
@@ -23,6 +18,11 @@ class ApplicatorFactory
         foreach ($availableApplicators as $applicator) {
             $this->availableApplicators[] = $applicator;
         }
+    }
+
+    public static function getDefaultPriority(): int
+    {
+        return 1;
     }
 
     /**
@@ -40,7 +40,7 @@ class ApplicatorFactory
                 }
 
                 return false;
-            }
+            },
         );
     }
 }

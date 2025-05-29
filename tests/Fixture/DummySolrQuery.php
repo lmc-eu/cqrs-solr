@@ -7,9 +7,7 @@ use Solarium\QueryType\Select\Query\Query;
 
 class DummySolrQuery extends AbstractSolrSelectQuery
 {
-    public function __construct(private array $fields)
-    {
-    }
+    public function __construct(private array $fields) {}
 
     public function prepareSelect(Query $select): Query
     {

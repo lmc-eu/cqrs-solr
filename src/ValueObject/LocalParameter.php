@@ -14,8 +14,8 @@ class LocalParameter
             throw new \InvalidArgumentException(
                 sprintf(
                     'Local Parameter has defined type "%s" and you should use it directly by LocalParameters::set... method.',
-                    $type
-                )
+                    $type,
+                ),
             );
         }
 

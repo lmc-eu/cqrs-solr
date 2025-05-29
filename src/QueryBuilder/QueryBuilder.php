@@ -8,9 +8,7 @@ use Lmc\Cqrs\Solr\QueryBuilder\Query\BuilderPrototypeQuery;
 
 class QueryBuilder
 {
-    public function __construct(private ApplicatorFactory $applicatorFactory)
-    {
-    }
+    public function __construct(private ApplicatorFactory $applicatorFactory) {}
 
     public function buildQuery(EntityInterface $entity): BuilderPrototypeQuery
     {

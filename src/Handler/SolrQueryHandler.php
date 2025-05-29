@@ -16,9 +16,7 @@ use Solarium\Core\Query\Result\ResultInterface;
  */
 class SolrQueryHandler extends AbstractQueryHandler
 {
-    public function __construct(private Client $client)
-    {
-    }
+    public function __construct(private Client $client) {}
 
     /** @phpstan-param QueryInterface<mixed> $query */
     public function supports(QueryInterface $query): bool
